@@ -53,9 +53,9 @@ The largest conversation was encrypted TLS traffic from `142.251.186.132` toward
 | 312–321 | First `STOR`, server `150`, FTP-DATA in **315** (754 bytes), server `226` | Outbound file data transferred; server reported successful completion |
 | 330–338 | Second `STOR`, server `150`, FTP-DATA in **333** (724 bytes), server `226` | Second outbound upload; server reported successful completion |
 
-**Exfiltration direction:** `10.2.3.101` (FTP client) → `162.241.123.75` (external FTP server). FTP control and data contents in this capture were readable **without TLS decryption**. The uploaded records included password-labeled fields and email contacts; the cryptographic state or usability of each individual password value was **not** established. This separates plaintext **transport** from whether a stored credential value may itself be encoded or protected.
+**Exfiltration direction:** `10.2.3.101` (FTP client) → `162.241.123.75` (external FTP server). FTP control and data contents in this capture were readable **without TLS decryption**. Password-labeled fields were visible in the captured packet contents, and the second transferred file contained readable email addresses. The uploaded records included password-labeled fields and email contacts; the cryptographic state or usability of each individual password value was **not** established. This separates plaintext **transport** from whether a stored credential value may itself be encoded or protected.
 
-![Outbound FTP data packets](screenshots/wireshark/04-ftp-data-uploads.png)
+**Screenshot privacy review:** The FTP-DATA screenshot was withheld from inline display because its filename metadata contained a local username. See frames 315 and 333 in the evidence table; an appropriately redacted screenshot can be added later.
 
 ### Activity preceding the FTP uploads
 
@@ -127,7 +127,7 @@ The ITSM ticket was marked **Resolved** to close the *lab exercise*. No live hos
 
 The investigation verified **two outbound FTP uploads** containing credential-related records and email contacts, then carried that evidence into a prioritized ServiceNow ITSM record with proposed response work notes. It did **not** prove GuLoader/AgentTesla execution, a specific initial-access technique, which process initiated the traffic, or successful real-world remediation. Endpoint process logs, EDR alerts, browser/download artifacts, and email security logs would be needed to investigate those questions.
 
-**Key lesson:** A server `STOR` request alone isn't proof of exfiltration; inspect the outbound data connection and `226` reply. High-volume TLS traffic also isn't automatically malicious.
+**Key lesson:** A client `STOR` command alone isn't proof of exfiltration; inspect the outbound data connection and `226` reply. High-volume TLS traffic also isn't automatically malicious.
 
 ## Dataset provenance and safe sharing
 
